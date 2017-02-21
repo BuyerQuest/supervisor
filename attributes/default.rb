@@ -43,4 +43,3 @@ default['supervisor']['ctlplugins'] = {}
 default['supervisor']['templates'] = {}
 
 node.default['supervisor']['pid_file']   = '/var/run/supervisor.pid'
-node.default['supervisor']['pid_option'] = ''
