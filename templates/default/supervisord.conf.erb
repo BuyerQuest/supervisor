@@ -25,7 +25,7 @@ logfile=<%= @node['supervisor']['log_dir'] %>/supervisord.log   ; (main log file
 logfile_maxbytes=<%= @node['supervisor']['logfile_maxbytes'] %> ; maximum size of logfile before rotation
 logfile_backups=<%= @node['supervisor']['logfile_backups'] %>   ; number of backed up logfiles
 loglevel=<%= @node['supervisor']['loglevel'] %>                 ; critical, error, warn, info, debug, trace, blather
-pidfile=/var/run/supervisord.pid                                ; (supervisord pidfile;default supervisord.pid)
+pidfile=<%= @node['supervisor']['pid_file'] %>                  ; (supervisord pidfile;default supervisord.pid)
 childlogdir=<%= @node['supervisor']['log_dir'] %>               ; ('AUTO' child log dir, default $TEMP)
 <% if @supervisor_version && @supervisor_version.match(/^3/) %>
 
