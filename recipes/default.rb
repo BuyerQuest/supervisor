@@ -38,11 +38,15 @@ directory node['supervisor']['dir'] do
   recursive true
 end
 
+cookbook_name = node['supervisor']['templates'].attribute?('conffile_cookbook') ?
+                  node['supervisor']['templates']['conffile_cookbook'] : nil
+
 template node['supervisor']['conffile'] do
   source "supervisord.conf.erb"
   owner "root"
   group "root"
   mode "644"
+  cookbook cookbook_name unless cookbook_name.nil?
   variables({
     :inet_port => node['supervisor']['inet_port'],
     :inet_username => node['supervisor']['inet_username'],
@@ -62,11 +66,15 @@ directory node['supervisor']['log_dir'] do
   recursive true
 end
 
+cookbook_name = node['supervisor']['templates'].attribute?('defaults_cookbook') ?
+                  node['supervisor']['templates']['defaults_cookbook'] : nil
+
 template "/etc/default/supervisor" do
   source "debian/supervisor.default.erb"
   owner "root"
   group "root"
   mode "644"
+  cookbook cookbook_name unless cookbook_name.nil?
   only_if { platform_family?("debian") }
 end
 
@@ -77,11 +85,15 @@ init_template_dir = value_for_platform_family(
 
 case node['platform']
 when "amazon", "centos", "debian", "fedora", "redhat", "ubuntu", "raspbian"
+  cookbook_name = node['supervisor']['templates'].attribute?('initscript_cookbook') ?
+                    node['supervisor']['templates']['initscript_cookbook'] : nil
+
   template "/etc/init.d/supervisor" do
     source "#{init_template_dir}/supervisor.init.erb"
     owner "root"
     group "root"
     mode "755"
+    cookbook cookbook_name unless cookbook_name.nil?
     variables({
       # TODO: use this variable in the debian platform-family template
       # instead of altering the PATH and calling "which supervisord".
@@ -100,11 +112,14 @@ when "smartos"
     mode "755"
   end
 
+  cookbook_name = node['supervisor']['templates'].attribute?('manifest_cookbook') ?
+                    node['supervisor']['templates']['manifest_cookbook'] : nil
   template "/opt/local/share/smf/supervisord/manifest.xml" do
     source "manifest.xml.erb"
     owner "root"
     group "root"
     mode "644"
+    cookbook cookbook_name unless cookbook_name.nil?
     notifies :run, "execute[svccfg-import-supervisord]", :immediately
   end
 

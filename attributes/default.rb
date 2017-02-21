@@ -39,3 +39,8 @@ default['supervisor']['minprocs'] = 200
 default['supervisor']['nocleanup'] = false
 default['supervisor']['socket_file'] = '/var/run/supervisor.sock'
 default['supervisor']['ctlplugins'] = {}
+
+default['supervisor']['templates'] = {}
+
+node.default['supervisor']['pid_file']   = '/var/run/supervisor.pid'
+node.default['supervisor']['pid_option'] = ''
